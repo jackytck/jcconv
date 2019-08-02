@@ -7,6 +7,9 @@ linux: src/*.go
 dev: src/*.go
 	go build -race -o jcc ./src
 
+gen: box/resources
+	go generate ./...
+
 lint:
 	golint src/...
 	golangci-lint run
