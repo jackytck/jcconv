@@ -1,11 +1,11 @@
-jcc: src/*.go
-	go build -o jcc ./src
+jcc: *.go */*.go
+	go build -o jcc
 
-linux: src/*.go
-	env GOOS=linux GOARCH=amd64 go build -o jcc-linux ./src
+linux: *.go */*.go
+	env GOOS=linux GOARCH=amd64 go build -o jcc-linux
 
-dev: src/*.go
-	go build -race -o jcc ./src
+dev: *.go */*.go
+	go build -race -o jcc
 
 gen: box/resources
 	go generate ./...
