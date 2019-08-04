@@ -1,9 +1,7 @@
 package cmd
 
 import (
-	"log"
-
-	"github.com/jackytck/go-chinese-converter/box"
+	"github.com/jackytck/go-chinese-converter/dict"
 	"github.com/spf13/cobra"
 )
 
@@ -13,11 +11,14 @@ var playCmd = &cobra.Command{
 	Short: "A brief description of your command",
 	Long:  "A longer description",
 	Run: func(cmd *cobra.Command, args []string) {
-		hkv, ok := box.Get("/HKVariants.txt")
-		if !ok {
-			log.Println("Not found!")
+		chains := []string{
+			"HKVariants.txt",
+			"TWVariants.txt",
 		}
-		log.Println(string(hkv))
+		_, err := dict.NewDict(chains)
+		if err != nil {
+			panic(err)
+		}
 	},
 }
 
