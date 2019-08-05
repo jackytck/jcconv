@@ -1,4 +1,4 @@
-package dict
+package lib
 
 import (
 	"errors"
@@ -27,11 +27,7 @@ func ReadTrans(t string) ([]string, [][]string, error) {
 			continue
 		}
 		key = append(key, toks[0])
-		if len(toks) > 2 {
-			trans = append(trans, toks[1:])
-		} else {
-			trans = append(trans, strings.Fields(toks[1]))
-		}
+		trans = append(trans, strings.Fields(toks[1]))
 	}
 
 	return key, trans, nil

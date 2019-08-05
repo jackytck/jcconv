@@ -1,7 +1,9 @@
 package cmd
 
 import (
-	"github.com/jackytck/go-chinese-converter/dict"
+	"log"
+
+	"github.com/jackytck/go-chinese-converter/lib"
 	"github.com/spf13/cobra"
 )
 
@@ -12,13 +14,17 @@ var playCmd = &cobra.Command{
 	Long:  "A longer description",
 	Run: func(cmd *cobra.Command, args []string) {
 		chains := []string{
+			"STPhrases.txt",
+			"STCharacters.txt",
 			"HKVariants.txt",
-			"TWVariants.txt",
+			"HKVariantsPhrases.txt",
+			"HKVariantsRevPhrases.txt",
 		}
-		_, err := dict.NewDict(chains)
+		c, err := lib.NewChain(chains)
 		if err != nil {
 			panic(err)
 		}
+		log.Println("level", c.Level)
 	},
 }
 
