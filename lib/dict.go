@@ -38,9 +38,45 @@ type Dict struct {
 	translations [][]string
 }
 
-// Match prefix matches the given s via its trie.
-func (d *Dict) Match(s string) (map[string][]string, error) {
-	// @TODO
+// Match matches the longest prefix match in the trie.
+// Return the key and value matched.
+func (d *Dict) Match(s string) (string, string, error) {
+	mats, err := d.MatchAll(s)
+	if err != nil {
+		return "", "", err
+	}
+	maxLen := 0
+	maxKey := ""
+	maxVal := ""
+	for k, v := range mats {
+		if len(k) > maxLen {
+			maxLen = len(k)
+			maxKey = k
+			maxVal = v[0] // only use the first variant
+		}
+	}
+
+	return maxKey, maxVal, nil
+}
+
+// MatchAll prefix matches all match via its trie from the given s.
+func (d *Dict) MatchAll(s string) (map[string][]string, error) {
+	if d.trie == nil {
+		return nil, errors.New("invalid dict")
+	}
 	ret := make(map[string][]string)
+	// If `num` is 0, it returns all matches.
+	num := 0
+	for _, id := range d.trie.PrefixMatch([]byte(s), num) {
+		k, err := d.trie.Key(id)
+		if err != nil {
+			return nil, err
+		}
+		v, err := d.trie.Value(id)
+		if err != nil {
+			return nil, err
+		}
+		ret[string(k)] = d.translations[v]
+	}
 	return ret, nil
 }
