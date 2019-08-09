@@ -15,14 +15,16 @@ var playCmd = &cobra.Command{
 	Short: "A brief description of your command",
 	Long:  "A longer description",
 	Run: func(cmd *cobra.Command, args []string) {
-		chains := []string{
+		main := []string{
 			"STPhrases.txt",
 			"STCharacters.txt",
+		}
+		variant := []string{
 			"HKVariants.txt",
 			"HKVariantsPhrases.txt",
 			"HKVariantsRevPhrases.txt",
 		}
-		c, err := lib.NewChain(chains)
+		c, err := lib.NewChain(main, variant)
 		if err != nil {
 			panic(err)
 		}
