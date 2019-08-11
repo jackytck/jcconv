@@ -40,6 +40,19 @@ var playCmd = &cobra.Command{
 			fmt.Println(out)
 		}
 
+		// @TEST
+		if inPath != "" {
+			lines, errc := file.ScanFile(inPath)
+			go func() {
+				for line := range lines {
+					fmt.Println(line)
+				}
+			}()
+			if err := <-errc; err != nil {
+				panic(err)
+			}
+		}
+
 		if inPath != "" {
 			s, err := file.ReadFile(inPath)
 			if err != nil {
