@@ -12,6 +12,7 @@ import (
 var input string
 var inPath string
 var outPath string
+var thread = -1
 
 // playCmd represents the play command
 var playCmd = &cobra.Command{
@@ -40,35 +41,26 @@ var playCmd = &cobra.Command{
 			fmt.Println(out)
 		}
 
-		// @TEST
 		if inPath != "" {
-			lines, errc := file.ScanFile(inPath)
-			go func() {
-				for line := range lines {
-					fmt.Println(line)
-				}
-			}()
+			lines, size, errc := file.ScanFile(inPath)
+			done := make(chan struct{})
+			// defer close(done)
+			result := make(chan file.Line)
+
+			digester := file.Digester{
+				Chain:  c,
+				Done:   done,
+				Lines:  lines,
+				Result: result,
+			}
+			digester.Run(-1)
+
+			w := make([]string, size)
+			for l := range result {
+				w[l.LineNum] = l.Text
+			}
 			if err := <-errc; err != nil {
 				panic(err)
-			}
-		}
-
-		if inPath != "" {
-			s, err := file.ReadFile(inPath)
-			if err != nil {
-				panic(err)
-			}
-
-			var w []string
-			for i, line := range s {
-				t, err := c.Translate(line)
-				if err != nil {
-					panic(err)
-				}
-				w = append(w, t)
-				if outPath == "" {
-					fmt.Println(i+1, t)
-				}
 			}
 
 			if outPath != "" {
@@ -76,6 +68,8 @@ var playCmd = &cobra.Command{
 				if err != nil {
 					panic(err)
 				}
+			} else {
+				fmt.Println(strings.Join(w, "\n"))
 			}
 		}
 	},
@@ -86,4 +80,5 @@ func init() {
 	playCmd.Flags().StringVarP(&input, "input", "i", input, "Input string.")
 	playCmd.Flags().StringVarP(&inPath, "file", "f", inPath, "Input file path.")
 	playCmd.Flags().StringVarP(&outPath, "out", "o", outPath, "Output file path.")
+	playCmd.Flags().IntVarP(&thread, "thread", "n", thread, "Number of threads to process, default is number of cores x 4")
 }

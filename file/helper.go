@@ -6,22 +6,21 @@ import (
 )
 
 // ScanFile scans the file (located at path) and channels it back per line.
-func ScanFile(path string) (<-chan Line, <-chan error) {
+func ScanFile(path string) (<-chan Line, int, <-chan error) {
 	lines := make(chan Line)
 	errc := make(chan error, 1)
 
+	ss, err := ReadFile(path)
+	errc <- err
+
 	go func() {
 		defer close(lines)
-
-		ss, err := ReadFile(path)
-		errc <- err
-
 		for i, s := range ss {
 			lines <- Line{int64(i), s}
 		}
 	}()
 
-	return lines, errc
+	return lines, len(ss), errc
 }
 
 // ReadFile reads a text file from path.
