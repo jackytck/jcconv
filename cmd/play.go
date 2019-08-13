@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"fmt"
+	"log"
 	"strings"
 
 	"github.com/jackytck/go-chinese-converter/file"
@@ -42,6 +43,15 @@ var playCmd = &cobra.Command{
 		}
 
 		if inPath != "" {
+			isText, err := file.IsTextFile(inPath)
+			if err != nil {
+				panic(err)
+			}
+			if !isText {
+				log.Printf("%q is not a plain text file!\n", inPath)
+				return
+			}
+
 			lines, size, errc := file.ScanFile(inPath)
 			done := make(chan struct{})
 			// defer close(done)

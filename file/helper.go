@@ -2,7 +2,9 @@ package file
 
 import (
 	"bufio"
+	"net/http"
 	"os"
+	"strings"
 )
 
 // ScanFile scans the file (located at path) and channels it back per line.
@@ -53,4 +55,31 @@ func WriteFile(text, path string) error {
 	defer f.Close()
 	_, err = f.WriteString(text)
 	return err
+}
+
+// IsTextFile tells if the file is a plain text file.
+func IsTextFile(file string) (bool, error) {
+	ext, err := GuessFileType(file)
+	if err != nil {
+		return false, err
+	}
+	if strings.Contains(ext, "text/") {
+		return true, nil
+	}
+	return false, nil
+}
+
+// GuessFileType guesses the type of file.
+func GuessFileType(file string) (string, error) {
+	buff := make([]byte, 512)
+	f, err := os.Open(file)
+	if err != nil {
+		return "", err
+	}
+	defer f.Close()
+	_, err = f.Read(buff)
+	if err != nil {
+		return "", err
+	}
+	return http.DetectContentType(buff), nil
 }
