@@ -83,3 +83,27 @@ func GuessFileType(file string) (string, error) {
 	}
 	return http.DetectContentType(buff), nil
 }
+
+// IsDir checks if the given path is a directory.
+func IsDir(d string) (bool, error) {
+	f, err := os.Stat(d)
+	if err != nil {
+		return false, err
+	}
+	if f.Mode().IsDir() {
+		return true, nil
+	}
+	return false, nil
+}
+
+// EnsureDir ensures a dir exists.
+func EnsureDir(p string, perm os.FileMode) error {
+	if perm == 0 {
+		perm = 0755
+	}
+	// ensure output dir
+	if _, err := os.Stat(p); os.IsNotExist(err) {
+		return os.MkdirAll(p, perm)
+	}
+	return nil
+}
