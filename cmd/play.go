@@ -54,7 +54,7 @@ var playCmd = &cobra.Command{
 
 			lines, size, errc := file.ScanFile(inPath)
 			done := make(chan struct{})
-			// defer close(done)
+			defer close(done)
 			result := make(chan file.Line)
 
 			digester := file.Digester{
@@ -63,7 +63,7 @@ var playCmd = &cobra.Command{
 				Lines:  lines,
 				Result: result,
 			}
-			digester.Run(-1)
+			digester.Run(thread)
 
 			w := make([]string, size)
 			for l := range result {
@@ -73,13 +73,13 @@ var playCmd = &cobra.Command{
 				panic(err)
 			}
 
-			if outPath != "" {
+			if outPath == "" {
+				fmt.Println(strings.Join(w, "\n"))
+			} else {
 				err := file.WriteFile(strings.Join(w, "\n"), outPath)
 				if err != nil {
 					panic(err)
 				}
-			} else {
-				fmt.Println(strings.Join(w, "\n"))
 			}
 		}
 	},
