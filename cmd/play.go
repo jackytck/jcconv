@@ -43,7 +43,7 @@ var playCmd = &cobra.Command{
 		}
 
 		if inPath != "" {
-			isText, err := file.IsTextFile(inPath)
+			isText, err := file.IsPotentialTextFile(inPath)
 			if err != nil {
 				panic(err)
 			}

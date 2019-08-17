@@ -2,6 +2,8 @@ package file
 
 import (
 	"bufio"
+	"fmt"
+	"io"
 	"net/http"
 	"os"
 	"strings"
@@ -57,7 +59,21 @@ func WriteFile(text, path string) error {
 	return err
 }
 
+// IsPotentialTextFIle tells if the file is potentially a plain text file.
+// It will also classify "application/octet-stream" as text file.
+func IsPotentialTextFile(file string) (bool, error) {
+	ext, err := GuessFileType(file)
+	if err != nil {
+		return false, err
+	}
+	if strings.Contains(ext, "text/") || ext == "application/octet-stream" {
+		return true, nil
+	}
+	return false, nil
+}
+
 // IsTextFile tells if the file is a plain text file.
+// It will NOT classify "application/octet-stream" as text file.
 func IsTextFile(file string) (bool, error) {
 	ext, err := GuessFileType(file)
 	if err != nil {
@@ -79,6 +95,10 @@ func GuessFileType(file string) (string, error) {
 	defer f.Close()
 	_, err = f.Read(buff)
 	if err != nil {
+		// ignore end of file
+		if err == io.EOF {
+			return "", nil
+		}
 		return "", err
 	}
 	return http.DetectContentType(buff), nil
@@ -106,4 +126,31 @@ func EnsureDir(p string, perm os.FileMode) error {
 		return os.MkdirAll(p, perm)
 	}
 	return nil
+}
+
+// Copy copies a file from src to dst.
+// Return number of bytes copied.
+func Copy(src, dst string) (int64, error) {
+	sourceFileStat, err := os.Stat(src)
+	if err != nil {
+		return 0, err
+	}
+
+	if !sourceFileStat.Mode().IsRegular() {
+		return 0, fmt.Errorf("%s is not a regular file", src)
+	}
+
+	source, err := os.Open(src)
+	if err != nil {
+		return 0, err
+	}
+	defer source.Close()
+
+	destination, err := os.Create(dst)
+	if err != nil {
+		return 0, err
+	}
+	defer destination.Close()
+	nBytes, err := io.Copy(destination, source)
+	return nBytes, err
 }
