@@ -1,7 +1,7 @@
 package lib
 
 import (
-	"errors"
+	"fmt"
 	"strings"
 
 	"github.com/jackytck/go-chinese-converter/box"
@@ -17,7 +17,7 @@ func ReadTrans(t string) ([]string, [][]string, error) {
 	// a. read bytes
 	tv, ok := box.Get("/" + t)
 	if !ok {
-		return key, trans, errors.New("translation not found")
+		return key, trans, fmt.Errorf("%q translation not found", t)
 	}
 
 	// b. parse line by line

@@ -7,30 +7,6 @@ import (
 	"github.com/jackytck/go-chinese-converter/lib"
 )
 
-// NewStoHK creates a new simplified chinese to hk Translator.
-func NewStoHK() (*Translator, error) {
-	main := []string{
-		"STPhrases.txt",
-		"STCharacters.txt",
-	}
-	variant := []string{
-		"HKVariants.txt",
-		"HKVariantsPhrases.txt",
-		"HKVariantsRevPhrases.txt",
-	}
-	return NewTranslator(main, variant)
-}
-
-// NewTranslator creates a new Translator.
-func NewTranslator(main, variant []string) (*Translator, error) {
-	c, err := lib.NewChain(main, variant)
-	if err != nil {
-		return nil, err
-	}
-	t := Translator{c, -1}
-	return &t, nil
-}
-
 // Translator represents a particular chain of translation.
 type Translator struct {
 	Chain  *lib.Chain
