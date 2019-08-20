@@ -2,15 +2,20 @@ package cmd
 
 import (
 	"fmt"
+	"log"
 	"os"
 	"path/filepath"
 	"strings"
+	"time"
 
 	"github.com/jackytck/go-chinese-converter/file"
+	"github.com/jackytck/go-chinese-converter/translator"
 	"github.com/spf13/cobra"
 )
 
 var inDir, outDir string
+var chain = "s2hk"
+var verbose bool
 
 // allCmd represents the all command
 var allCmd = &cobra.Command{
@@ -18,6 +23,14 @@ var allCmd = &cobra.Command{
 	Short: "Translate all text file(s)",
 	Long:  "Translate all of the text file(s) under the input directory.",
 	Run: func(cmd *cobra.Command, args []string) {
+		start := time.Now()
+		defer func() {
+			if verbose {
+				elapsed := time.Since(start)
+				log.Println("Took", elapsed)
+			}
+		}()
+
 		// check
 		c, err := file.IsDir(inDir)
 		must(err)
@@ -29,17 +42,29 @@ var allCmd = &cobra.Command{
 		root, err := filepath.Abs(inDir)
 		must(err)
 
+		trans, err := translator.New(chain)
+		must(err)
+
 		onWalk := func(path string, info os.FileInfo, err error) error {
 			if err != nil {
 				return err
 			}
 
+			dst := strings.Replace(path, root, outDir, 1)
+
 			if info.Mode().IsRegular() {
-				//@TODO translate text file
-				//@TODO copy non-text file
+				text, err := file.IsPotentialTextFile(path)
+				must(err)
+				if text {
+					// translate text
+					must(trans.Translate(path, dst))
+				} else {
+					// just copy any file
+					_, err := file.Copy(path, dst)
+					must(err)
+				}
 			} else {
-				d := strings.Replace(path, root, outDir, 1)
-				must(file.EnsureDir(d, 0775))
+				must(file.EnsureDir(dst, 0775))
 			}
 
 			return nil
@@ -55,6 +80,8 @@ func init() {
 	rootCmd.AddCommand(allCmd)
 	allCmd.Flags().StringVarP(&inDir, "in", "d", inDir, "Input directory path.")
 	allCmd.Flags().StringVarP(&outDir, "out", "o", outDir, "Output directory path.")
+	allCmd.Flags().StringVarP(&chain, "chain", "c", chain, "Conversion chain: s2hk")
+	allCmd.Flags().BoolVarP(&verbose, "verbose", "v", verbose, "Display individual image info")
 	allCmd.MarkFlagRequired("in")
 	allCmd.MarkFlagRequired("out")
 }
