@@ -47,5 +47,4 @@ func init() {
 	fileCmd.Flags().IntVarP(&thread, "thread", "n", thread, "Number of threads to process, default is number of cores x 4")
 	fileCmd.Flags().BoolVarP(&verbose, "verbose", "v", verbose, "Display more info")
 	fileCmd.MarkFlagRequired("file")
-	fileCmd.MarkFlagRequired("out")
 }

@@ -1,6 +1,7 @@
 package translator
 
 import (
+	"fmt"
 	"strings"
 
 	"github.com/jackytck/go-chinese-converter/file"
@@ -35,9 +36,14 @@ func (t *Translator) Translate(in, out string) error {
 	if err := <-errc; err != nil {
 		return err
 	}
-	err := file.WriteFile(strings.Join(w, "\n"), out)
-	if err != nil {
-		return err
+	s := strings.Join(w, "\n")
+	if out == "" {
+		fmt.Println(s)
+	} else {
+		err := file.WriteFile(strings.Join(w, "\n"), out)
+		if err != nil {
+			return err
+		}
 	}
 
 	return nil
