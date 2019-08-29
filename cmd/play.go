@@ -29,6 +29,7 @@ var playCmd = &cobra.Command{
 			"HKVariants.txt",
 			"HKVariantsPhrases.txt",
 			"HKVariantsRevPhrases.txt",
+			"TWPhrasesIT.txt",
 		}
 		c, err := lib.NewChain(main, variant)
 		if err != nil {

@@ -81,7 +81,7 @@ func init() {
 	allCmd.Flags().StringVarP(&inDir, "in", "d", inDir, "Input directory path.")
 	allCmd.Flags().StringVarP(&outDir, "out", "o", outDir, "Output directory path.")
 	allCmd.Flags().StringVarP(&chain, "chain", "c", chain, "Conversion chain: s2hk")
-	allCmd.Flags().BoolVarP(&verbose, "verbose", "v", verbose, "Display individual image info")
+	allCmd.Flags().BoolVarP(&verbose, "verbose", "v", verbose, "Display more info")
 	allCmd.MarkFlagRequired("in")
 	allCmd.MarkFlagRequired("out")
 }
