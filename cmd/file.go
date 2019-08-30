@@ -12,7 +12,7 @@ import (
 // fileCmd represents the file command
 var fileCmd = &cobra.Command{
 	Use:   "file",
-	Short: "Translate a single file.",
+	Short: "Translate a single file",
 	Long:  "Translate a single file and output to the given path.",
 	Run: func(cmd *cobra.Command, args []string) {
 		start := time.Now()

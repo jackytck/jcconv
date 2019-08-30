@@ -14,6 +14,11 @@ type Translator struct {
 	Thread int
 }
 
+// TranslateOne translates one line of text in one thread.
+func (t *Translator) TranslateOne(line string) (string, error) {
+	return t.Chain.Translate(line)
+}
+
 // Translate translates an input from in and output it to out.
 func (t *Translator) Translate(in, out string) error {
 	lines, size, errc := file.ScanFile(in)
