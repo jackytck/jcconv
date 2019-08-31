@@ -7,6 +7,9 @@ linux: *.go */*.go
 dev: *.go */*.go
 	go build -race -o jcc
 
+dep:
+	GOOS=windows go get -u github.com/spf13/cobra
+
 gen: box/resources
 	go generate ./...
 
