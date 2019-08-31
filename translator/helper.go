@@ -14,10 +14,13 @@ func New(name string) (*Translator, error) {
 		return newStoHK()
 	case "s2tw":
 		return newStoTW()
+	case "hk2s":
+		return newHKtoS()
+	case "tw2s":
+		return newTWtoS()
 	default:
-		return nil, fmt.Errorf("%q not found", name)
+		return nil, fmt.Errorf("%q is not valid, try: 's2hk', 's2tw', 'hk2s' or 'tw2s'", name)
 	}
-
 }
 
 // NewStoHK creates a new simplified chinese to hk Translator.
@@ -29,7 +32,6 @@ func newStoHK() (*Translator, error) {
 	variant := []string{
 		"HKVariants.txt",
 		"HKVariantsPhrases.txt",
-		"HKVariantsRevPhrases.txt",
 		"TWPhrasesIT.txt",
 	}
 	return newTranslator(main, variant)
@@ -43,10 +45,33 @@ func newStoTW() (*Translator, error) {
 	}
 	variant := []string{
 		"TWVariants.txt",
-		"TWVariantsRevPhrases.txt",
 		"TWPhrasesOther.txt",
 		"TWPhrasesName.txt",
 		"TWPhrasesIT.txt",
+	}
+	return newTranslator(main, variant)
+}
+
+// NewHKtoS creates a new hk to simplified chinese Translator.
+func newHKtoS() (*Translator, error) {
+	main := []string{
+		"HKVariantsRevPhrases.txt",
+	}
+	variant := []string{
+		"TSPhrases.txt",
+		"TSCharacters.txt",
+	}
+	return newTranslator(main, variant)
+}
+
+// NewTWtoS creates a new tw to simplified chinese Translator.
+func newTWtoS() (*Translator, error) {
+	main := []string{
+		"TWVariantsRevPhrases.txt",
+	}
+	variant := []string{
+		"TSPhrases.txt",
+		"TSCharacters.txt",
 	}
 	return newTranslator(main, variant)
 }

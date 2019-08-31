@@ -14,7 +14,6 @@ import (
 )
 
 var inDir, outDir string
-var chain = "s2hk"
 var verbose bool
 
 // allCmd represents the all command
@@ -80,7 +79,7 @@ func init() {
 	rootCmd.AddCommand(allCmd)
 	allCmd.Flags().StringVarP(&inDir, "in", "d", inDir, "Input directory path.")
 	allCmd.Flags().StringVarP(&outDir, "out", "o", outDir, "Output directory path.")
-	allCmd.Flags().StringVarP(&chain, "chain", "c", chain, "Conversion chain: s2hk")
+	allCmd.Flags().StringVarP(&chain, "convert", "c", chain, "Conversion: one of 's2hk' (default), 's2tw', 'hk2s', 'tw2s'.")
 	allCmd.Flags().BoolVarP(&verbose, "verbose", "v", verbose, "Display more info")
 	allCmd.MarkFlagRequired("in")
 	allCmd.MarkFlagRequired("out")

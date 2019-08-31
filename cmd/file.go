@@ -33,7 +33,10 @@ var fileCmd = &cobra.Command{
 
 		// b. translator
 		trans, err := translator.New(chain)
-		must(err)
+		if err != nil {
+			log.Println(err)
+			return
+		}
 
 		// c. translate
 		must(trans.Translate(inPath, outPath))
@@ -44,6 +47,7 @@ func init() {
 	rootCmd.AddCommand(fileCmd)
 	fileCmd.Flags().StringVarP(&inPath, "file", "f", inPath, "Input file path.")
 	fileCmd.Flags().StringVarP(&outPath, "out", "o", outPath, "Output file path.")
+	fileCmd.Flags().StringVarP(&chain, "convert", "c", chain, "Conversion: one of 's2hk' (default), 's2tw', 'hk2s', 'tw2s'.")
 	fileCmd.Flags().IntVarP(&thread, "thread", "n", thread, "Number of threads to process, default is number of cores x 4")
 	fileCmd.Flags().BoolVarP(&verbose, "verbose", "v", verbose, "Display more info")
 	fileCmd.MarkFlagRequired("file")
