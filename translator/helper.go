@@ -55,6 +55,7 @@ func newStoTW() (*Translator, error) {
 // NewHKtoS creates a new hk to simplified chinese Translator.
 func newHKtoS() (*Translator, error) {
 	main := []string{
+		"TWRevPhrasesIT.txt",
 		"HKVariantsRevPhrases.txt",
 	}
 	variant := []string{
@@ -67,6 +68,9 @@ func newHKtoS() (*Translator, error) {
 // NewTWtoS creates a new tw to simplified chinese Translator.
 func newTWtoS() (*Translator, error) {
 	main := []string{
+		"TWRevPhrasesIT.txt",
+		"TWRevPhrasesName.txt",
+		"TWRevPhrasesOther.txt",
 		"TWVariantsRevPhrases.txt",
 	}
 	variant := []string{
