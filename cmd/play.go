@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 
+	"github.com/jackytck/go-chinese-converter/detector"
 	"github.com/jackytck/go-chinese-converter/translator"
 	"github.com/spf13/cobra"
 )
@@ -11,7 +12,7 @@ import (
 var input string
 var inPath string
 var outPath string
-var chain = "s2hk"
+var chain = "auto"
 var thread = -1
 
 // playCmd represents the play command
@@ -20,14 +21,33 @@ var playCmd = &cobra.Command{
 	Short: "Translate a single line",
 	Long:  "Enter original text in standard input and get back the result in standard output.",
 	Run: func(cmd *cobra.Command, args []string) {
-		// a. translator
+		// a. detect chain
+		if chain == "auto" {
+			d, err := detector.NewDetector(0)
+			if err != nil {
+				log.Println(err)
+				return
+			}
+			isTrad, err := d.IsTraditional(input)
+			if err != nil {
+				log.Println(err)
+				return
+			}
+			if isTrad {
+				chain = "hk2s"
+			} else {
+				chain = "s2hk"
+			}
+		}
+
+		// b. translator
 		trans, err := translator.New(chain)
 		if err != nil {
 			log.Println(err)
 			return
 		}
 
-		// b. translate
+		// c. translate
 		out, err := trans.TranslateOne(input)
 		must(err)
 
@@ -38,6 +58,6 @@ var playCmd = &cobra.Command{
 func init() {
 	rootCmd.AddCommand(playCmd)
 	playCmd.Flags().StringVarP(&input, "input", "i", input, "Input string.")
-	playCmd.Flags().StringVarP(&chain, "convert", "c", chain, "Conversion: one of 's2hk' (default), 's2tw', 'hk2s', 'tw2s'.")
+	playCmd.Flags().StringVarP(&chain, "convert", "c", chain, "Conversion: one of 'auto' (default), 's2hk', 's2tw', 'hk2s', 'tw2s'.")
 	playCmd.MarkFlagRequired("input")
 }
