@@ -2,6 +2,7 @@ project_name: jcconv
 before:
   hooks:
   - make dep
+  - make gen
 builds:
   -
     env:
