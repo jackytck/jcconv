@@ -2,6 +2,7 @@ on:
   push:
     tags:
       - 'v*'
+  repository_dispatch: {}
 name: jcconv
 jobs:
   release:
