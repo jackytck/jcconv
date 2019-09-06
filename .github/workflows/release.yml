@@ -19,7 +19,7 @@ jobs:
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
       with:
-        args: aws s3 sync s3://nat-ci/jcconv box/recources --quiet
+        args: s3 sync s3://nat-ci/jcconv box/recources --quiet
       if: success()
     - name: goreleaser
       uses: docker://goreleaser/goreleaser
