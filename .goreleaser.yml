@@ -1,7 +1,7 @@
 project_name: jcconv
 before:
   hooks:
-  - go get github.com/inconshreveable/mousetrap
+  - go get github.com/inconshreveable/mousetrap github.com/spf13/cobra github.com/spf13/viper github.com/go-ego/cedar github.com/mitchellh/go-homedir
   - go generate ./...
   - mkdir -p /go/src/github.com/jackytck/
   - ln -s /github/workspace /go/src/github.com/jackytck/go-chinese-converter
