@@ -3,6 +3,7 @@ before:
   hooks:
   - go get github.com/inconshreveable/mousetrap
   - go generate ./...
+  - mkdir -p /go/src/github.com/jackytck/
   - ln -s /github/workspace /go/src/github.com/jackytck/go-chinese-converter
 builds:
   -
