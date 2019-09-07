@@ -1,7 +1,6 @@
 project_name: jcconv
 before:
   hooks:
-  - go get ./...
   - go get github.com/inconshreveable/mousetrap
   - go generate ./...
 builds:
