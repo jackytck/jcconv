@@ -1,7 +1,5 @@
 on:
-  push:
-    tags:
-      - 'v*'
+  repository_dispatch: {}
 name: jcconv
 jobs:
   release:
@@ -25,5 +23,5 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        args: release
+        args: --snapshot
       if: success()
