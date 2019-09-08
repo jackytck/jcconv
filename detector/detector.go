@@ -48,12 +48,16 @@ func (d *Detector) Detect(s string) (float64, error) {
 	}
 
 	// b. compute sample size
-	size := utf8.RuneCountInString(t)
-	if d.SampleSize > 0 && size > d.SampleSize {
-		size = d.SampleSize
+	tsize := utf8.RuneCountInString(t)
+	if d.SampleSize > 0 && tsize > d.SampleSize {
+		tsize = d.SampleSize
 	}
-	if size == 0 {
+	if tsize == 0 {
 		return -1, nil
+	}
+	ssize := utf8.RuneCountInString(s)
+	if ssize != tsize {
+		return 0, nil
 	}
 
 	// c. count probability
@@ -66,5 +70,5 @@ func (d *Detector) Detect(s string) (float64, error) {
 		}
 	}
 
-	return float64(cnt) / float64(size), nil
+	return float64(cnt) / float64(tsize), nil
 }
