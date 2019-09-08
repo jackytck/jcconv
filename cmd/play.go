@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/jackytck/go-chinese-converter/detector"
-	"github.com/jackytck/go-chinese-converter/translator"
+	"github.com/jackytck/jcconv/detector"
+	"github.com/jackytck/jcconv/translator"
 	"github.com/spf13/cobra"
 )
 

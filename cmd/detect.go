@@ -3,7 +3,7 @@ package cmd
 import (
 	"fmt"
 
-	"github.com/jackytck/go-chinese-converter/detector"
+	"github.com/jackytck/jcconv/detector"
 	"github.com/spf13/cobra"
 )
 

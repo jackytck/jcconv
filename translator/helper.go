@@ -3,7 +3,7 @@ package translator
 import (
 	"fmt"
 
-	"github.com/jackytck/go-chinese-converter/lib"
+	"github.com/jackytck/jcconv/lib"
 )
 
 // New creates a new translator by name.

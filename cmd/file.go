@@ -4,8 +4,8 @@ import (
 	"log"
 	"time"
 
-	"github.com/jackytck/go-chinese-converter/file"
-	"github.com/jackytck/go-chinese-converter/translator"
+	"github.com/jackytck/jcconv/file"
+	"github.com/jackytck/jcconv/translator"
 	"github.com/spf13/cobra"
 )
 

@@ -1,6 +1,6 @@
 package main
 
-import "github.com/jackytck/go-chinese-converter/cmd"
+import "github.com/jackytck/jcconv/cmd"
 
 func main() {
 	cmd.Execute()

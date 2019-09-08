@@ -3,7 +3,7 @@ package detector
 import (
 	"unicode/utf8"
 
-	"github.com/jackytck/go-chinese-converter/translator"
+	"github.com/jackytck/jcconv/translator"
 )
 
 // NewDetector constructs a new traditional detector.

@@ -4,7 +4,7 @@ import (
 	"runtime"
 	"sync"
 
-	"github.com/jackytck/go-chinese-converter/lib"
+	"github.com/jackytck/jcconv/lib"
 )
 
 // Digester digests a single text file with n goroutines.

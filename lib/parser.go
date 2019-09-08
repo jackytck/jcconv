@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/jackytck/go-chinese-converter/box"
+	"github.com/jackytck/jcconv/box"
 )
 
 // ReadTrans reads the translation files.

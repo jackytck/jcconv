@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/jackytck/go-chinese-converter/file"
-	"github.com/jackytck/go-chinese-converter/lib"
+	"github.com/jackytck/jcconv/file"
+	"github.com/jackytck/jcconv/lib"
 )
 
 // Translator represents a particular chain of translation.
