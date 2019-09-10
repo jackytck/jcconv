@@ -5,7 +5,9 @@ import (
 	"net/http"
 )
 
-// HelloServer prints hello message.
-func HelloServer(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "Hello, %s!", r.URL.Path[1:])
+// Index renders the index page with source represented as page.
+func Index(page string) func(http.ResponseWriter, *http.Request) {
+	return func(w http.ResponseWriter, r *http.Request) {
+		fmt.Fprint(w, page)
+	}
 }
