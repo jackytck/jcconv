@@ -12,8 +12,57 @@
   </head>
   <body>
     <div id="main">
-      <textarea id="text" name="text" rows="20" cols="100">
-      </textarea>
+      <form>
+        <textarea id="text" rows="20" cols="100" placeholder="Type in this box." oninput="onInputDe()" autofocus></textarea>
+        <textarea id="out" rows="20" cols="100" readonly></textarea>
+        <p id="error"></p>
+      </form>
     </div>
+    <script>
+      const onInputDe = debounce(onInput, 250);
+
+      function debounce (func, wait) {
+        let timeout;
+        return function() {
+          const context = this, args = arguments;
+          const later = function() {
+            timeout = null;
+            func.apply(context, args);
+          };
+          const callNow = !timeout;
+          clearTimeout(timeout);
+          timeout = setTimeout(later, wait);
+          if (callNow) {
+            func.apply(context, args);
+          }
+        };
+      };
+
+      function onInput () {
+        const text = document.getElementById('text').value;
+        const outBox = document.getElementById('out');
+        const error = document.getElementById('error');
+
+        error.innerHTML = '';
+        outBox.innerHTML = '';
+
+        post(text).then(res => {
+          if (res.error) {
+            error.innerHTML = res.error;
+          } else {
+            outBox.innerHTML = res.output;
+          }
+        });
+      }
+
+      function post (text) {
+        const url = 'http://127.0.0.1:8080/translate';
+        return fetch(url, {
+          method : 'POST',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: `text=${encodeURIComponent(text)}`
+        }).then(response => response.json())
+      }
+    </script>
   </body>
 </html>
