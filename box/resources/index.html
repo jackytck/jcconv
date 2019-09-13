@@ -4,19 +4,48 @@
     <meta charset="utf-8">
     <title>jcconv</title>
     <style>
-      body, html {
+      body, html, div {
         height: 100%;
         width: 100%;
+      }
+      textarea {
+        margin: 15px;
+        font-size: 20px;
+      }
+      a {
+        text-decoration: none;
+      }
+      .main {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        align-items: center;
+        align-content: center;
+      }
+      .container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        align-content: center;
+      }
+      #error {
+        color: red;
+      }
+      .footer {
+        margin-top: 0;
       }
     </style>
   </head>
   <body>
-    <div id="main">
-      <form>
-        <textarea id="text" rows="20" cols="100" placeholder="Type in this box." oninput="onInputDe()" autofocus></textarea>
-        <textarea id="out" rows="20" cols="100" readonly></textarea>
-        <p id="error"></p>
+    <div class="main">
+      <p id="error"></p>
+      <form class="container">
+        <textarea id="text" rows="28" cols="70" placeholder="In" oninput="onInputDe()" autofocus></textarea>
+        <textarea id="out" rows="28" cols="70" placeholder="Out" readonly></textarea>
       </form>
+      <p class="footer">
+        <a href="https://github.com/jackytck/jcconv">♡ Jacky Tang</a>
+      </p>
     </div>
     <script>
       const onInputDe = debounce(onInput, 250);
