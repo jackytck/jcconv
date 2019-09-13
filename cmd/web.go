@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"strings"
 
 	"github.com/jackytck/jcconv/box"
 	"github.com/jackytck/jcconv/detector"
@@ -13,6 +14,7 @@ import (
 )
 
 var port = 8080
+var domain = "http://127.0.0.1:8080"
 
 // webCmd represents the web command
 var webCmd = &cobra.Command{
@@ -46,10 +48,15 @@ var webCmd = &cobra.Command{
 			log.Println("index.html not found!")
 			return
 		}
+		domain = strings.Replace(domain, "8080", fmt.Sprintf("%d", port), 1)
+		ps := strings.Replace(string(page), "{DOMAIN}", domain, 1)
 
 		// c. handlers
-		log.Printf("Listening at http://127.0.0.1:%d\n", port)
-		http.HandleFunc("/", web.Index(string(page)))
+		log.Printf("Locally listening at http://127.0.0.1:%d\n", port)
+		if !strings.Contains(domain, "127.0.0.1") {
+			log.Printf("Externally at %s\n", domain)
+		}
+		http.HandleFunc("/", web.Index(ps))
 		http.HandleFunc("/translate", web.Translate(det, trans2hk, trans2s))
 		http.ListenAndServe(fmt.Sprintf(":%d", port), nil)
 	},
@@ -58,4 +65,5 @@ var webCmd = &cobra.Command{
 func init() {
 	rootCmd.AddCommand(webCmd)
 	webCmd.Flags().IntVarP(&port, "port", "p", port, "Port of local server.")
+	webCmd.Flags().StringVarP(&domain, "domain", "d", domain, "External protocol and domain name, e.g. https://jcconv.nat.com")
 }
