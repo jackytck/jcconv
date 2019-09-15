@@ -38,3 +38,12 @@ changelog:
     exclude:
     - '^docs:'
     - '^test:'
+dockers:
+  -
+    goos: linux
+    goarch: amd64
+    binaries:
+    - jcconv
+    image_templates:
+    - "jackytck/jcconv:{{ .Tag }}"
+    dockerfile: Dockerfile
