@@ -2,6 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>jcconv</title>
     <style>
       body, html, div {
@@ -10,10 +11,11 @@
         margin: 0;
       }
       textarea {
+        border:1px dotted gray;
         margin: 15px;
         font-size: 20px;
-        width:  calc(48vw - 15px);
-        height: 68vh;
+        width:  calc(47vw - 25px);
+        height: 78vh;
         resize: none;
       }
       a {
@@ -22,7 +24,6 @@
       .main {
         display: flex;
         flex-direction: column;
-        justify-content: space-around;
         align-items: center;
         align-content: center;
       }
@@ -34,25 +35,63 @@
       }
       #error {
         color: red;
+        margin: 3px;
       }
       .footer {
-        margin-top: 0;
+        position: absolute;
+        height: 1.5rem;
+        bottom: 0;
+      }
+      .downArrow {
+        display: none;
+      }
+      @media only screen and (max-width: 600px) {
+        .title {
+          margin: 5px;
+        }
+        .container {
+          flex-direction: column;
+        }
+        textarea {
+          margin: 3px;
+          width: 90vw;
+          height: 30vh;
+        }
+        .rightArrow {
+          display: none;
+        }
+        .downArrow {
+          display: inline-block;
+        }
+      }
+      @media only screen and (max-height: 600px) {
+        .title {
+          margin: 2px;
+        }
+        textarea {
+          margin: 5px;
+          width: 45vw;
+          height: 62vh;
+        }
       }
     </style>
   </head>
   <body>
     <div class="main">
+      <h3 class="title">繁簡轉換器</h3>
       <p id="error"></p>
       <form class="container">
-        <textarea id="text" rows="28" cols="70" placeholder="In" oninput="onInputDe()" autofocus></textarea>
-        <textarea id="out" rows="28" cols="70" placeholder="Out" readonly></textarea>
+        <textarea id="text" rows="28" cols="70" oninput="onInputDe()" autofocus></textarea>
+        <span class="rightArrow">→</span>
+        <span class="downArrow">↓</span>
+        <textarea id="out" rows="28" cols="70" readonly></textarea>
       </form>
       <p class="footer">
         <a href="https://github.com/jackytck/jcconv">♡ Jacky Tang</a>
       </p>
     </div>
     <script>
-      const onInputDe = debounce(onInput, 250);
+      const onInputDe = debounce(onInput, 200);
 
       function debounce (func, wait) {
         let timeout;
@@ -77,11 +116,11 @@
         const error = document.getElementById('error');
 
         error.innerHTML = '';
-        outBox.innerHTML = '';
 
         post(text).then(res => {
           if (res.error) {
             error.innerHTML = res.error;
+            outBox.innerHTML = '';
           } else {
             outBox.innerHTML = res.output;
           }
