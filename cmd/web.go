@@ -56,7 +56,7 @@ var webCmd = &cobra.Command{
 		if !strings.Contains(domain, "127.0.0.1") {
 			log.Printf("Externally at %s\n", domain)
 		}
-		http.HandleFunc("/", web.Index(ps))
+		http.HandleFunc("/", web.Index(ps, det, trans2hk, trans2s))
 		http.HandleFunc("/translate", web.Translate(det, trans2hk, trans2s))
 		http.ListenAndServe(fmt.Sprintf(":%d", port), nil)
 	},
