@@ -21,3 +21,9 @@ all: jcconv jcconv-linux
 
 clean:
 	rm jcconv jcconv-linux
+
+publish:
+	make linux
+	ssh go-pg 'sudo systemctl stop jcconv'
+	scp jcconv-linux go-pg:~/jcconv/jcconv
+	ssh go-pg 'sudo systemctl start jcconv'
