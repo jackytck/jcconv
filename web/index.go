@@ -39,9 +39,11 @@ func Index(page string, det *detector.Detector, trans2hk, trans2s *translator.Tr
 					error = err.Error()
 					break
 				}
+
+				pageWithData = strings.Replace(pageWithData, " autofocus", "", 1)
 			}
 		}
-		pageWithData = strings.Replace(page, "{INPUT}", text, 1)
+		pageWithData = strings.Replace(pageWithData, "{INPUT}", text, 1)
 		pageWithData = strings.Replace(pageWithData, "{OUTPUT}", output, 1)
 		pageWithData = strings.Replace(pageWithData, "{ERROR}", error, 1)
 
