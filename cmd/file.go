@@ -39,7 +39,7 @@ var fileCmd = &cobra.Command{
 		}
 
 		// c. translate
-		must(trans.Translate(inPath, outPath))
+		must(trans.TranslateFile(inPath, outPath))
 	},
 }
 

@@ -56,7 +56,7 @@ var allCmd = &cobra.Command{
 				must(err)
 				if text {
 					// translate text
-					must(trans.Translate(path, dst))
+					must(trans.TranslateFile(path, dst))
 				} else {
 					// just copy any file
 					_, err := file.Copy(path, dst)

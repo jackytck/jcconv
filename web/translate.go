@@ -58,7 +58,7 @@ func Translate(det *detector.Detector, trans2hk, trans2s *translator.Translator)
 			trans = trans2hk
 		}
 
-		out, err := trans.TranslateOne(text)
+		out, err := trans.Translate(text)
 		if err != nil {
 			res.Error = err.Error()
 			return

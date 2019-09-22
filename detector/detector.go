@@ -42,7 +42,7 @@ func (d *Detector) IsTraditional(s string) (bool, error) {
 // Non chinese text would give 1. -1 if error.
 func (d *Detector) Detect(s string) (float64, error) {
 	// a. translate
-	t, err := d.Translator.TranslateOne(s)
+	t, err := d.Translator.Translate(s)
 	if err != nil {
 		return -1, err
 	}

@@ -48,7 +48,7 @@ var playCmd = &cobra.Command{
 		}
 
 		// c. translate
-		out, err := trans.TranslateOne(input)
+		out, err := trans.Translate(input)
 		must(err)
 
 		fmt.Println(out)

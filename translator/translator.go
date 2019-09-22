@@ -14,13 +14,8 @@ type Translator struct {
 	Thread int
 }
 
-// TranslateOne translates one line of text in one thread.
-func (t *Translator) TranslateOne(line string) (string, error) {
-	return t.Chain.Translate(line)
-}
-
-// Translate translates an input from in and output it to out.
-func (t *Translator) Translate(in, out string) error {
+// TranslateFile translates an input from in and output it to out.
+func (t *Translator) TranslateFile(in, out string) error {
 	lines, size, errc := file.ScanFile(in)
 	done := make(chan struct{})
 	defer close(done)
@@ -52,4 +47,29 @@ func (t *Translator) Translate(in, out string) error {
 	}
 
 	return nil
+}
+
+// Translate translates in ram without file io.
+// TODO: get error from result channel
+func (t *Translator) Translate(line string) (string, error) {
+	lines, size := file.SplitLine(line)
+	done := make(chan struct{})
+	defer close(done)
+	result := make(chan file.Line)
+
+	digester := file.Digester{
+		Chain:  t.Chain,
+		Done:   done,
+		Lines:  lines,
+		Result: result,
+	}
+	digester.Run(t.Thread)
+
+	w := make([]string, size)
+	for l := range result {
+		w[l.LineNum] = l.Text
+	}
+
+	s := strings.Join(w, "\n")
+	return s, nil
 }

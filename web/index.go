@@ -37,7 +37,7 @@ func Index(page string, det *detector.Detector, trans2hk, trans2s *translator.Tr
 					trans = trans2hk
 				}
 
-				output, err = trans.TranslateOne(text)
+				output, err = trans.Translate(text)
 				if err != nil {
 					error = err.Error()
 					break

@@ -154,3 +154,18 @@ func Copy(src, dst string) (int64, error) {
 	nBytes, err := io.Copy(destination, source)
 	return nBytes, err
 }
+
+// SplitLine splits a line by its endline: "\n".
+func SplitLine(line string) (<-chan Line, int) {
+	lines := strings.Split(line, "\n")
+	ch := make(chan Line)
+
+	go func() {
+		defer close(ch)
+		for i, s := range lines {
+			ch <- Line{int64(i), s}
+		}
+	}()
+
+	return ch, len(lines)
+}
