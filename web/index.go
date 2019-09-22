@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net/http"
 	"strings"
+	"time"
 
 	"github.com/jackytck/jcconv/detector"
 	"github.com/jackytck/jcconv/translator"
@@ -12,6 +13,8 @@ import (
 // Index renders the index page with source represented as page.
 func Index(page string, det *detector.Detector, trans2hk, trans2s *translator.Translator) func(http.ResponseWriter, *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
+		start := time.Now()
+
 		// get input from url param if any
 		var text, output, error string
 		pageWithData := page
@@ -46,6 +49,9 @@ func Index(page string, det *detector.Detector, trans2hk, trans2s *translator.Tr
 		pageWithData = strings.Replace(pageWithData, "{INPUT}", text, 1)
 		pageWithData = strings.Replace(pageWithData, "{OUTPUT}", output, 1)
 		pageWithData = strings.Replace(pageWithData, "{ERROR}", error, 1)
+
+		elapsed := time.Since(start).String()
+		pageWithData = strings.Replace(pageWithData, "{ELAPSED}", elapsed, 1)
 
 		fmt.Fprint(w, pageWithData)
 	}

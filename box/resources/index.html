@@ -13,8 +13,9 @@
       textarea {
         border:1px dotted gray;
         margin: 15px;
+        margin-top: 3px;
         font-size: 20px;
-        width:  calc(47vw - 25px);
+        width:  45vw;
         height: 78vh;
         resize: none;
       }
@@ -42,6 +43,12 @@
         color: red;
         margin: 3px;
       }
+      #time {
+        margin: 0px;
+        margin-right: calc(5vw - 26px);
+        align-self: flex-end;
+        font-size: small;
+      }
       .footer {
         position: absolute;
         height: 1.5rem;
@@ -56,6 +63,9 @@
         }
         .container {
           flex-direction: column;
+        }
+        #time {
+          margin-right: calc(5vw - 4px)
         }
         textarea {
           margin: 3px;
@@ -73,6 +83,9 @@
         .title {
           margin: 2px;
         }
+        #time {
+          margin-right: calc(5vw - 14px)
+        }
         textarea {
           margin: 5px;
           width: 45vw;
@@ -85,6 +98,7 @@
     <div class="main">
       <h3 class="title">繁簡轉換器</h3>
       <p id="error">{ERROR}</p>
+      <p id="time">{ELAPSED}</p>
       <form class="container">
         <textarea id="text" rows="28" cols="70" oninput="onInputDe()" autofocus>{INPUT}</textarea>
         <span class="rightArrow">→</span>
@@ -110,6 +124,7 @@
           clearTimeout(timeout);
           timeout = setTimeout(later, wait);
           if (callNow) {
+            clearTimeout(timeout);
             func.apply(context, args);
           }
         };
@@ -118,6 +133,7 @@
       function onInput () {
         const text = document.getElementById('text').value;
         const outBox = document.getElementById('out');
+        const elapsed = document.getElementById('time');
         const error = document.getElementById('error');
 
         error.innerHTML = '';
@@ -137,9 +153,11 @@
         post(text).then(res => {
           if (res.error) {
             error.innerHTML = res.error;
+            elapsed.innerHTML = '';
             outBox.innerHTML = '';
           } else {
             outBox.innerHTML = res.output;
+            elapsed.innerHTML = res.elapsed;
           }
         });
       }
