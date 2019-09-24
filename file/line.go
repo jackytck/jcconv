@@ -4,4 +4,5 @@ package file
 type Line struct {
 	LineNum int64
 	Text    string
+	Error   error
 }

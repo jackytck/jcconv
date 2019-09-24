@@ -56,7 +56,7 @@ func (d *Digester) digest() {
 func (d *Digester) translate(line Line) Line {
 	out, err := d.Chain.Translate(line.Text)
 	if err != nil {
-		panic(err)
+		return Line{line.LineNum, line.Text, err}
 	}
-	return Line{line.LineNum, out}
+	return Line{line.LineNum, out, nil}
 }

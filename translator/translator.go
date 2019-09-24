@@ -50,7 +50,6 @@ func (t *Translator) TranslateFile(in, out string) error {
 }
 
 // Translate translates in ram without file io.
-// TODO: get error from result channel
 func (t *Translator) Translate(line string) (string, error) {
 	lines, size := file.SplitLine(line)
 	done := make(chan struct{})
@@ -67,6 +66,9 @@ func (t *Translator) Translate(line string) (string, error) {
 
 	w := make([]string, size)
 	for l := range result {
+		if l.Error != nil {
+			return "", l.Error
+		}
 		w[l.LineNum] = l.Text
 	}
 

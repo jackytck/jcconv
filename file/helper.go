@@ -20,7 +20,7 @@ func ScanFile(path string) (<-chan Line, int, <-chan error) {
 	go func() {
 		defer close(lines)
 		for i, s := range ss {
-			lines <- Line{int64(i), s}
+			lines <- Line{int64(i), s, nil}
 		}
 	}()
 
@@ -59,7 +59,7 @@ func WriteFile(text, path string) error {
 	return err
 }
 
-// IsPotentialTextFIle tells if the file is potentially a plain text file.
+// IsPotentialTextFile tells if the file is potentially a plain text file.
 // It will also classify "application/octet-stream" as text file.
 func IsPotentialTextFile(file string) (bool, error) {
 	ext, err := GuessFileType(file)
@@ -163,7 +163,7 @@ func SplitLine(line string) (<-chan Line, int) {
 	go func() {
 		defer close(ch)
 		for i, s := range lines {
-			ch <- Line{int64(i), s}
+			ch <- Line{int64(i), s, nil}
 		}
 	}()
 
