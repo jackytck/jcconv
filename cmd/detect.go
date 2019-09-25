@@ -28,5 +28,5 @@ var detectCmd = &cobra.Command{
 func init() {
 	rootCmd.AddCommand(detectCmd)
 	detectCmd.Flags().StringVarP(&input, "input", "i", input, "Input string.")
-	detectCmd.MarkFlagRequired("input")
+	must(detectCmd.MarkFlagRequired("input"))
 }

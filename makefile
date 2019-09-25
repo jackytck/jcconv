@@ -15,7 +15,7 @@ gen: box/resources
 
 lint:
 	golint src/...
-	golangci-lint run
+	golangci-lint run --skip-dirs box
 
 all: jcconv jcconv-linux
 

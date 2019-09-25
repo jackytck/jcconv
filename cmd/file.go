@@ -50,5 +50,5 @@ func init() {
 	fileCmd.Flags().StringVarP(&chain, "convert", "c", chain, "Conversion: one of 's2hk' (default), 's2tw', 'hk2s', 'tw2s'.")
 	fileCmd.Flags().IntVarP(&thread, "thread", "n", thread, "Number of threads to process, default is number of cores x 4")
 	fileCmd.Flags().BoolVarP(&verbose, "verbose", "v", verbose, "Display more info")
-	fileCmd.MarkFlagRequired("file")
+	must(fileCmd.MarkFlagRequired("file"))
 }

@@ -59,5 +59,5 @@ func init() {
 	rootCmd.AddCommand(playCmd)
 	playCmd.Flags().StringVarP(&input, "input", "i", input, "Input string.")
 	playCmd.Flags().StringVarP(&chain, "convert", "c", chain, "Conversion: one of 'auto' (default), 's2hk', 's2tw', 'hk2s', 'tw2s'.")
-	playCmd.MarkFlagRequired("input")
+	must(playCmd.MarkFlagRequired("input"))
 }

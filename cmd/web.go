@@ -58,7 +58,7 @@ var webCmd = &cobra.Command{
 		}
 		http.HandleFunc("/", web.Index(ps, det, trans2hk, trans2s))
 		http.HandleFunc("/translate", web.Translate(det, trans2hk, trans2s))
-		http.ListenAndServe(fmt.Sprintf(":%d", port), nil)
+		must(http.ListenAndServe(fmt.Sprintf(":%d", port), nil))
 	},
 }
 

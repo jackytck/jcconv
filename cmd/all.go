@@ -81,12 +81,6 @@ func init() {
 	allCmd.Flags().StringVarP(&outDir, "out", "o", outDir, "Output directory path.")
 	allCmd.Flags().StringVarP(&chain, "convert", "c", chain, "Conversion: one of 's2hk' (default), 's2tw', 'hk2s', 'tw2s'.")
 	allCmd.Flags().BoolVarP(&verbose, "verbose", "v", verbose, "Display more info")
-	allCmd.MarkFlagRequired("in")
-	allCmd.MarkFlagRequired("out")
-}
-
-func must(e error) {
-	if e != nil {
-		panic(e)
-	}
+	must(allCmd.MarkFlagRequired("in"))
+	must(allCmd.MarkFlagRequired("out"))
 }

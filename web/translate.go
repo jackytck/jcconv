@@ -20,7 +20,10 @@ func Translate(det *detector.Detector, trans2hk, trans2s *translator.Translator)
 		var res TransRes
 		defer func() {
 			res.Elapsed = time.Since(start).String()
-			json.NewEncoder(w).Encode(res)
+			err := json.NewEncoder(w).Encode(res)
+			if err != nil {
+				panic(err)
+			}
 		}()
 
 		var text string
