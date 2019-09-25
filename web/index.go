@@ -51,6 +51,9 @@ func Index(page string, det *detector.Detector, trans2hk, trans2s *translator.Tr
 		pageWithData = strings.Replace(pageWithData, "{ERROR}", error, 1)
 
 		elapsed := time.Since(start).String()
+		if text == "" {
+			elapsed = ""
+		}
 		pageWithData = strings.Replace(pageWithData, "{ELAPSED}", elapsed, 1)
 
 		fmt.Fprint(w, pageWithData)
