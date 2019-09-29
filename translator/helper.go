@@ -10,6 +10,8 @@ import (
 // name: "s2hk"
 func New(name string) (*Translator, error) {
 	switch name {
+	case "s2t":
+		return newStoT()
 	case "s2hk":
 		return newStoHK()
 	case "s2tw":
@@ -23,7 +25,18 @@ func New(name string) (*Translator, error) {
 	}
 }
 
-// NewStoHK creates a new simplified chinese to hk Translator.
+// newStoT creates a new simplified chinese to tranditional Translator
+// without any variant.
+func newStoT() (*Translator, error) {
+	main := []string{
+		"STPhrases.txt",
+		"STCharacters.txt",
+	}
+	variant := []string{}
+	return newTranslator(main, variant)
+}
+
+// newStoHK creates a new simplified chinese to hk Translator.
 func newStoHK() (*Translator, error) {
 	main := []string{
 		"STPhrases.txt",
@@ -37,7 +50,7 @@ func newStoHK() (*Translator, error) {
 	return newTranslator(main, variant)
 }
 
-// NewStoTW creates a new simplified chinese to tw Translator.
+// newStoTW creates a new simplified chinese to tw Translator.
 func newStoTW() (*Translator, error) {
 	main := []string{
 		"STPhrases.txt",
@@ -52,7 +65,7 @@ func newStoTW() (*Translator, error) {
 	return newTranslator(main, variant)
 }
 
-// NewHKtoS creates a new hk to simplified chinese Translator.
+// newHKtoS creates a new hk to simplified chinese Translator.
 func newHKtoS() (*Translator, error) {
 	main := []string{
 		"TWRevPhrasesIT.txt",
@@ -65,7 +78,7 @@ func newHKtoS() (*Translator, error) {
 	return newTranslator(main, variant)
 }
 
-// NewTWtoS creates a new tw to simplified chinese Translator.
+// newTWtoS creates a new tw to simplified chinese Translator.
 func newTWtoS() (*Translator, error) {
 	main := []string{
 		"TWRevPhrasesIT.txt",
@@ -80,7 +93,7 @@ func newTWtoS() (*Translator, error) {
 	return newTranslator(main, variant)
 }
 
-// NewTranslator creates a new Translator.
+// newTranslator creates a new Translator.
 func newTranslator(main, variant []string) (*Translator, error) {
 	c, err := lib.NewChain(main, variant)
 	if err != nil {

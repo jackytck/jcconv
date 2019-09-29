@@ -8,7 +8,7 @@ import (
 
 // NewDetector constructs a new traditional detector.
 func NewDetector(size int) (*Detector, error) {
-	chain := "s2hk"
+	chain := "s2t"
 	trans, err := translator.New(chain)
 	if err != nil {
 		return nil, err
@@ -38,7 +38,8 @@ func (d *Detector) IsTraditional(s string) (bool, error) {
 	return false, nil
 }
 
-// Detect gives the probability of being in traditional/simplified chinese (according to translator) if it is chinese.
+// Detect gives the probability of being in traditional chinese if it is a s-to-t translator.
+// Or probability of simplified chineses if it is a t-to-s translator.
 // Non chinese text would give 1. -1 if error.
 func (d *Detector) Detect(s string) (float64, error) {
 	// a. translate
