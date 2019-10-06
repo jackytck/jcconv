@@ -25,7 +25,7 @@ func New(name string) (*Translator, error) {
 	}
 }
 
-// newStoT creates a new simplified chinese to tranditional Translator
+// newStoT creates a new simplified chinese to traditional Translator
 // without any variant.
 func newStoT() (*Translator, error) {
 	main := []string{
