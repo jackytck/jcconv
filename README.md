@@ -3,6 +3,15 @@
 
 ## jcconv
 
+### Overview
+* Completely **offline**
+* **Single binary** of size 13M
+* **Cross platform**: Darwin64, Linux64, Win32, Win64
+* **Fast** with multi-threading
+* **API** server with demo page
+* With **variants**: compare: [jcconv](https://jcconv.jackytck.com/?text=一邊食公仔麵，一邊看衰仔樂園) vs [google](https://translate.google.com.hk/#view=home&op=translate&sl=zh-CN&tl=zh-CN&text=%E4%B8%80%E9%82%8A%E9%A3%9F%E5%85%AC%E4%BB%94%E9%BA%B5%EF%BC%8C%E4%B8%80%E9%82%8A%E7%9C%8B%E8%A1%B0%E4%BB%94%E6%A8%82%E5%9C%92)
+* **No limit** on word count
+
 ### Single line
 Enter original text in standard input and get back the result in standard output.
 
@@ -97,3 +106,9 @@ $ curl -sd 'text=就像收集垃圾和剷雪一樣的事。不得不由誰來做
   "elapsed": "588.239µs"
 }
 ```
+
+### Sharing link
+Link with translation by using the query parameter `text`, e.g.
+
+* https://jcconv.jackytck.com/?text=歐幾理得推論
+* https://jcconv.jackytck.com/?text=map%20%E8%BF%99%E7%A7%8D%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%9C%A8%E5%85%B6%E4%BB%96%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80%E4%B8%AD%E4%B9%9F%E7%A7%B0%E4%B8%BA%E5%AD%97%E5%85%B8%EF%BC%88Python%EF%BC%89%E3%80%81hash%20%E5%92%8C%20HashTable%20%E7%AD%89%E3%80%82
