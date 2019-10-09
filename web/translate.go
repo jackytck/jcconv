@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"strings"
 	"time"
 
 	"github.com/jackytck/jcconv/detector"
@@ -11,7 +12,7 @@ import (
 )
 
 // Translate auto translates the input text.
-func Translate(det *detector.Detector, trans2hk, trans2s *translator.Translator) func(http.ResponseWriter, *http.Request) {
+func Translate(det *detector.Detector, tm map[string]*translator.Translator) func(http.ResponseWriter, *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
 		start := time.Now()
 		w.Header().Set("Content-Type", "application/json")
@@ -27,20 +28,28 @@ func Translate(det *detector.Detector, trans2hk, trans2s *translator.Translator)
 		}()
 
 		var text string
+		var chain string
 		switch r.Method {
 		case http.MethodGet:
-			texts, ok := r.URL.Query()["text"]
+			q := r.URL.Query()
+			texts, ok := q["text"]
 			if !ok || len(texts[0]) < 1 {
 				res.Error = fmt.Sprintf("Missing %q parameter!", "text")
 				return
 			}
 			text = texts[0]
+
+			chains, ok := q["chain"]
+			if ok {
+				chain = chains[0]
+			}
 		case http.MethodPost:
 			if err := r.ParseForm(); err != nil {
 				res.Error = fmt.Sprintf("ParseForm() err: %v", err)
 				return
 			}
 			text = r.FormValue("text")
+			chain = r.FormValue("chain")
 		}
 
 		if text == "" {
@@ -48,17 +57,27 @@ func Translate(det *detector.Detector, trans2hk, trans2s *translator.Translator)
 			return
 		}
 		res.Input = text
+		res.Chain = chain
 
-		isTrad, err := det.IsTraditional(text)
-		if err != nil {
-			res.Error = err.Error()
-			return
-		}
 		var trans *translator.Translator
-		if isTrad {
-			trans = trans2s
+		if chain == "" {
+			// auto detect
+			isTrad, err := det.IsTraditional(text)
+			if err != nil {
+				res.Error = err.Error()
+				return
+			}
+			if isTrad {
+				trans = tm["hk2s"]
+			} else {
+				trans = tm["s2hk"]
+			}
 		} else {
-			trans = trans2hk
+			if !translator.IsValidChain(chain) {
+				res.Error = fmt.Sprintf("Invalid chain, valid chains are: %s", strings.Join(translator.ValidChains, ", "))
+				return
+			}
+			trans = tm[chain]
 		}
 
 		out, err := trans.Translate(text)

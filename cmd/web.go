@@ -30,13 +30,8 @@ var webCmd = &cobra.Command{
 			return
 		}
 
-		// b. setup translators in both directions
-		trans2hk, err := translator.New("s2hk")
-		if err != nil {
-			log.Println(err)
-			return
-		}
-		trans2s, err := translator.New("hk2s")
+		// b. setup translators in both directions (hk + tw)
+		tm, err := translator.NewAll()
 		if err != nil {
 			log.Println(err)
 			return
@@ -56,8 +51,8 @@ var webCmd = &cobra.Command{
 		if !strings.Contains(domain, "127.0.0.1") {
 			log.Printf("Externally at %s\n", domain)
 		}
-		http.HandleFunc("/", web.Index(ps, det, trans2hk, trans2s))
-		http.HandleFunc("/translate", web.Translate(det, trans2hk, trans2s))
+		http.HandleFunc("/", web.Index(ps, det, tm["s2hk"], tm["hk2s"]))
+		http.HandleFunc("/translate", web.Translate(det, tm))
 		must(http.ListenAndServe(fmt.Sprintf(":%d", port), nil))
 	},
 }

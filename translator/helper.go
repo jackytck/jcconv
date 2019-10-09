@@ -6,6 +6,44 @@ import (
 	"github.com/jackytck/jcconv/lib"
 )
 
+// ValidChains defines the valid chains.
+var ValidChains = []string{"s2hk", "s2tw", "hk2s", "tw2s"}
+
+// IsValidChain tells if the chain key is valid.
+func IsValidChain(c string) bool {
+	_, valid := contains(ValidChains, c)
+	return valid
+}
+
+// NewAll creates all types of translators.
+func NewAll() (map[string]*Translator, error) {
+	// hk
+	s2hk, err := New("s2hk")
+	if err != nil {
+		return nil, err
+	}
+	hk2s, err := New("hk2s")
+	if err != nil {
+		return nil, err
+	}
+	// tw
+	s2tw, err := New("s2tw")
+	if err != nil {
+		return nil, err
+	}
+	tw2s, err := New("tw2s")
+	if err != nil {
+		return nil, err
+	}
+	m := map[string]*Translator{
+		"s2hk": s2hk,
+		"hk2s": hk2s,
+		"s2tw": s2tw,
+		"tw2s": tw2s,
+	}
+	return m, nil
+}
+
 // New creates a new translator by name.
 // name: "s2hk"
 func New(name string) (*Translator, error) {
@@ -101,4 +139,15 @@ func newTranslator(main, variant []string) (*Translator, error) {
 	}
 	t := Translator{c, -1}
 	return &t, nil
+}
+
+// contains tells whether a contains s.
+// And return the index of first match. If not found, index is -1.
+func contains(a []string, s string) (int, bool) {
+	for i, e := range a {
+		if s == e {
+			return i, true
+		}
+	}
+	return -1, false
 }
