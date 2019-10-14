@@ -8,27 +8,65 @@ import (
 
 // NewDetector constructs a new traditional detector.
 func NewDetector(size int) (*Detector, error) {
-	chain := "s2t"
-	trans, err := translator.New(chain)
+	transST, err := translator.New("s2t")
+	if err != nil {
+		return nil, err
+	}
+	transS2HK, err := translator.New("s2hk")
 	if err != nil {
 		return nil, err
 	}
 	d := Detector{
-		Translator: trans,
-		SampleSize: size,
+		TranslatorST:   transST,
+		TranslatorS2HK: transS2HK,
+		SampleSize:     size,
 	}
 	return &d, nil
 }
 
 // Detector detects whether the text is simplified or traditional chinese.
 type Detector struct {
-	Translator *translator.Translator
-	SampleSize int
+	TranslatorST   *translator.Translator
+	TranslatorS2HK *translator.Translator
+	SampleSize     int
+}
+
+// DetectLang detects whether the input string is 'zh-CN', 'zh-HK' or 'zh-TW'.
+// Default fallback is 'zh-hk'.
+func (d *Detector) DetectLang(s string) (string, error) {
+	ret := "zh-hk"
+	isTrad, err := d.IsTraditional(s)
+	if err != nil {
+		return ret, err
+	}
+	if !isTrad {
+		return "zh-CN", nil
+	}
+	isHK, err := d.IsHK(s)
+	if err != nil {
+		return ret, err
+	}
+	if isHK {
+		return "zh-HK", nil
+	}
+	return "zh-TW", nil
 }
 
 // IsTraditional detects if the string is a traditional chinese.
 func (d *Detector) IsTraditional(s string) (bool, error) {
-	p, err := d.Detect(s)
+	p, err := d.Detect(s, d.TranslatorST)
+	if err != nil {
+		return false, err
+	}
+	if p > 0.97 {
+		return true, nil
+	}
+	return false, nil
+}
+
+// IsHK detects if the string is a traditional hong kong chinese.
+func (d *Detector) IsHK(s string) (bool, error) {
+	p, err := d.Detect(s, d.TranslatorS2HK)
 	if err != nil {
 		return false, err
 	}
@@ -41,15 +79,15 @@ func (d *Detector) IsTraditional(s string) (bool, error) {
 // Detect gives the probability of being in traditional chinese if it is a s-to-t translator.
 // Or probability of simplified chineses if it is a t-to-s translator.
 // Non chinese text would give 1. -1 if error.
-func (d *Detector) Detect(s string) (float64, error) {
+func (d *Detector) Detect(s string, t *translator.Translator) (float64, error) {
 	// a. translate
-	t, err := d.Translator.Translate(s)
+	tt, err := t.Translate(s)
 	if err != nil {
 		return -1, err
 	}
 
 	// b. compute sample size
-	tsize := utf8.RuneCountInString(t)
+	tsize := utf8.RuneCountInString(tt)
 	if d.SampleSize > 0 && tsize > d.SampleSize {
 		tsize = d.SampleSize
 	}
@@ -63,7 +101,7 @@ func (d *Detector) Detect(s string) (float64, error) {
 
 	// c. count probability
 	rs := []rune(s)
-	rt := []rune(t)
+	rt := []rune(tt)
 	cnt := 0
 	for i, c := range rt {
 		if c == rs[i] {

@@ -15,13 +15,9 @@ var detectCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		d, err := detector.NewDetector(0)
 		must(err)
-		t, err := d.IsTraditional(input)
+		lang, err := d.DetectLang(input)
 		must(err)
-		if t {
-			fmt.Println("traditional")
-		} else {
-			fmt.Println("simplified")
-		}
+		fmt.Println(lang)
 	},
 }
 
