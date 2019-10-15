@@ -59,19 +59,29 @@ func Translate(det *detector.Detector, tm map[string]*translator.Translator) fun
 		res.Input = text
 		res.Chain = chain
 
+		// detect locale
+		locale, err := det.DetectLang(text)
+		if err != nil {
+			res.Error = err.Error()
+			return
+		}
+		res.Locale = locale
+
 		var trans *translator.Translator
 		if chain == "" {
-			// auto detect
-			isTrad, err := det.IsTraditional(text)
-			if err != nil {
-				res.Error = err.Error()
-				return
+			c := chain
+			switch locale {
+			case "zh-HK":
+				c = "hk2s"
+				trans = tm[c]
+			case "zh-TW":
+				c = "tw2s"
+				trans = tm[c]
+			case "zh-CN":
+				c = "s2hk"
+				trans = tm[c]
 			}
-			if isTrad {
-				trans = tm["hk2s"]
-			} else {
-				trans = tm["s2hk"]
-			}
+			res.Chain = c
 		} else {
 			if !translator.IsValidChain(chain) {
 				res.Error = fmt.Sprintf("Invalid chain, valid chains are: %s", strings.Join(translator.ValidChains, ", "))
