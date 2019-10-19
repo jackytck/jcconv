@@ -101,11 +101,12 @@ GET or POST: parameter: `text`
 $ curl -sd 'text=就像收集垃圾和剷雪一樣的事。不得不由誰來做。和喜不喜歡沒有關係。' http://127.0.0.1:8080/translate | jq
 {
   "input": "就像收集垃圾和剷雪一樣的事。不得不由誰來做。和喜不喜歡沒有關係。",
-  "locale": "zh-HK",
+  "fromLocale": "zh-HK",
+  "toLocale": "zh-CN",
   "chain": "hk2s",
   "output": "就像收集垃圾和铲雪一样的事。不得不由谁来做。和喜不喜欢没有关系。",
   "error": "",
-  "elapsed": "433.806µs"
+  "elapsed": "665.733µs"
 }
 ```
 

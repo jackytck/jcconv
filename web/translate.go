@@ -65,19 +65,17 @@ func Translate(det *detector.Detector, tm map[string]*translator.Translator) fun
 			res.Error = err.Error()
 			return
 		}
-		res.Locale = locale
-
 		var trans *translator.Translator
 		if chain == "" {
 			c := chain
 			switch locale {
-			case "zh-HK":
+			case translator.ZhHK:
 				c = "hk2s"
 				trans = tm[c]
-			case "zh-TW":
+			case translator.ZhTW:
 				c = "tw2s"
 				trans = tm[c]
-			case "zh-CN":
+			case translator.ZhCN:
 				c = "s2hk"
 				trans = tm[c]
 			}
@@ -96,5 +94,6 @@ func Translate(det *detector.Detector, tm map[string]*translator.Translator) fun
 			return
 		}
 		res.Output = out
+		res.FromLocale, res.ToLocale = translator.ChainToLocale(res.Chain)
 	}
 }
