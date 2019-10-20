@@ -9,11 +9,20 @@ import (
 // ZhHK represents the hk locale.
 const ZhHK = "zh-HK"
 
+// ZhHKC represents the hk locale in chinese.
+const ZhHKC = "港"
+
 // ZhTW represents the tw locale.
 const ZhTW = "zh-TW"
 
+// ZhTWC represents the tw locale in chinese.
+const ZhTWC = "台"
+
 // ZhCN represents the cn locale.
 const ZhCN = "zh-CN"
+
+// ZhCNC represents the cn locale in chinese.
+const ZhCNC = "簡"
 
 // ValidChains defines the valid chains.
 var ValidChains = []string{"s2hk", "s2tw", "hk2s", "tw2s"}
@@ -161,7 +170,7 @@ func contains(a []string, s string) (int, bool) {
 	return -1, false
 }
 
-// ChainToLocale get the source and destination locales of a given chain.
+// ChainToLocale gets the source and destination locales of a given chain.
 func ChainToLocale(c string) (string, string) {
 	switch c {
 	case "hk2s":
@@ -174,4 +183,17 @@ func ChainToLocale(c string) (string, string) {
 		return ZhCN, ZhTW
 	}
 	return "", ""
+}
+
+// LocaleToChineseText gets the locale text in chinese.
+func LocaleToChineseText(loc string) string {
+	switch loc {
+	case ZhHK:
+		return ZhHKC
+	case ZhTW:
+		return ZhTWC
+	case ZhCN:
+		return ZhCNC
+	}
+	return ""
 }
