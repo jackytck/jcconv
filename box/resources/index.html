@@ -5,19 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>jcconv</title>
     <style>
-      body, html, div {
+      body, html {
         height: 100%;
         width: 100%;
         margin: 0;
       }
       textarea {
         border:1px dotted gray;
-        margin: 15px;
-        margin-top: 3px;
-        font-size: 20px;
+        resize: none;
         width:  45vw;
         height: 78vh;
-        resize: none;
+        font-size: 20px;
       }
       textarea:focus {
         outline: none !important;
@@ -28,6 +26,7 @@
         color: gray;
       }
       .main {
+        width: 100%;
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -35,6 +34,15 @@
       }
       .title {
         margin-bottom: 8px;
+      }
+      .locale {
+        margin: 0px;
+        margin-bottom: 1px;
+        font-size: medium;
+        height: 22px;
+      }
+      .taView {
+        margin: 3px 15px 0px 15px;
       }
       .container {
         display: flex;
@@ -48,7 +56,7 @@
       }
       #time {
         margin: 0px;
-        margin-right: calc(5vw - 26px);
+        margin-right: calc(5vw - 29px);
         align-self: flex-end;
         font-size: small;
         height: 18px;
@@ -69,18 +77,21 @@
           flex-direction: column;
         }
         #time {
-          margin-right: calc(5vw - 4px)
+          margin-right: calc(5vw - 3px)
         }
         textarea {
-          margin: 3px;
           width: 90vw;
           height: 30vh;
+        }
+        .taView {
+          margin: 3px 3px 0px 3px;
         }
         .rightArrow {
           display: none;
         }
         .downArrow {
           display: inline-block;
+          margin-bottom:5px;
         }
       }
       @media only screen and (max-height: 600px) {
@@ -88,12 +99,14 @@
           margin: 2px;
         }
         #time {
-          margin-right: calc(5vw - 14px)
+          margin-right: calc(5vw - 19px)
+        }
+        .taView {
+          margin: 5px 5px 0px 5px;
         }
         textarea {
-          margin: 5px;
           width: 45vw;
-          height: 62vh;
+          height: 59vh;
         }
       }
     </style>
@@ -102,13 +115,19 @@
     <div class="main">
       <h3 class="title">繁簡轉換器</h3>
       <p id="error">{ERROR}</p>
-      <p id="time">{ELAPSED}</p>
       <form class="container">
-        <textarea id="text" rows="28" cols="70" oninput="onInputDe()" autofocus>{INPUT}</textarea>
+        <div class="taView">
+          <p id="fromLocale" class="locale">{FROM_LOCALE}</p>
+          <textarea id="text" rows="28" cols="70" oninput="onInputDe()" autofocus>{INPUT}</textarea>
+        </div>
         <span class="rightArrow">→</span>
         <span class="downArrow">↓</span>
-        <textarea id="out" rows="28" cols="70" readonly>{OUTPUT}</textarea>
+        <div class="taView">
+          <p id="toLocale" class="locale">{TO_LOCALE}</p>
+          <textarea id="out" rows="28" cols="70" readonly>{OUTPUT}</textarea>
+        </div>
       </form>
+      <span id="time">{ELAPSED}</span>
       <p class="footer">
         <a href="https://github.com/jackytck/jcconv">♡ Jacky Tang</a>
       </p>
@@ -137,6 +156,8 @@
       function onInput () {
         const text = document.getElementById('text').value;
         const outBox = document.getElementById('out');
+        const fromLocale = document.getElementById('fromLocale');
+        const toLocale = document.getElementById('toLocale');
         const elapsed = document.getElementById('time');
         const error = document.getElementById('error');
 
@@ -153,16 +174,22 @@
           }
           outBox.innerHTML = '';
           elapsed.innerHTML = '';
+          fromLocale.innerHTML = '';
+          toLocale.innerHTML = '';
           return;
         }
         post(text).then(res => {
           if (res.error) {
             error.innerHTML = res.error;
             elapsed.innerHTML = '';
+            fromLocale.innerHTML = '';
+            toLocale.innerHTML = '';
             outBox.innerHTML = '';
           } else {
             outBox.innerHTML = res.output;
             elapsed.innerHTML = res.elapsed;
+            fromLocale.innerHTML = localeText(res.fromLocale);
+            toLocale.innerHTML = localeText(res.toLocale);
           }
         });
       }
@@ -174,6 +201,17 @@
           headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
           body: `text=${encodeURIComponent(text)}`
         }).then(response => response.json());
+      }
+
+      function localeText (locale) {
+        switch (locale) {
+          case 'zh-HK':
+            return '港';
+          case 'zh-TW':
+            return '台';
+          case 'zh-CN':
+            return '簡';
+        }
       }
     </script>
   </body>
