@@ -76,6 +76,9 @@
         .container {
           flex-direction: column;
         }
+        #error {
+          margin: 0px;
+        }
         #time {
           margin-right: calc(5vw - 3px)
         }
@@ -91,12 +94,15 @@
         }
         .downArrow {
           display: inline-block;
-          margin-bottom:5px;
+          margin-bottom: -12px;
         }
       }
       @media only screen and (max-height: 600px) {
         .title {
           margin: 2px;
+        }
+        #error {
+          margin: 0px;
         }
         #time {
           margin-right: calc(5vw - 19px)
@@ -106,8 +112,11 @@
         }
         textarea {
           width: 45vw;
-          height: 59vh;
+          height: 55vh;
         }
+      .footer {
+        height: 1.2rem;
+      }
       }
     </style>
   </head>
