@@ -92,6 +92,7 @@ jcconv web [flags]
   -d, --domain string   External protocol and domain name, e.g. https://jcconv.nat.com (default "http://127.0.0.1:8080")
   -h, --help            help for web
   -p, --port int        Port of local server. (default 8080)
+  -t, --track string    Google analytics tracking code, e.g. UA-XXXXXXXXX-X
 ```
 
 ### API

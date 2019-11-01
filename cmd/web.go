@@ -15,6 +15,7 @@ import (
 
 var port = 8080
 var domain = "http://127.0.0.1:8080"
+var track = ""
 
 // webCmd represents the web command
 var webCmd = &cobra.Command{
@@ -45,6 +46,7 @@ var webCmd = &cobra.Command{
 		}
 		domain = strings.Replace(domain, "8080", fmt.Sprintf("%d", port), 1)
 		ps := strings.Replace(string(page), "{DOMAIN}", domain, 1)
+		ps = strings.Replace(ps, "{ANALYTICS}", web.GoogleAnalytics(track), 1)
 
 		// c. handlers
 		log.Printf("Locally listening at http://127.0.0.1:%d\n", port)
@@ -61,4 +63,5 @@ func init() {
 	rootCmd.AddCommand(webCmd)
 	webCmd.Flags().IntVarP(&port, "port", "p", port, "Port of local server.")
 	webCmd.Flags().StringVarP(&domain, "domain", "d", domain, "External protocol and domain name, e.g. https://jcconv.nat.com")
+	webCmd.Flags().StringVarP(&track, "track", "t", track, "Google analytics tracking code, e.g. UA-XXXXXXXXX-X")
 }
