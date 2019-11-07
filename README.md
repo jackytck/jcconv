@@ -7,10 +7,20 @@
 * Completely **offline**
 * **Single binary** of size 13M
 * **Cross platform**: Darwin64, Linux64, Win32, Win64
+* Support **Docker**, image size: 11.1M
 * **Fast** with multi-threading
 * **API** server with demo page
 * With **variants**: compare: [jcconv](https://jcconv.jackytck.com/?text=一邊食公仔麵，一邊看衰仔樂園) vs [google](https://translate.google.com.hk/#view=home&op=translate&sl=zh-CN&tl=zh-CN&text=%E4%B8%80%E9%82%8A%E9%A3%9F%E5%85%AC%E4%BB%94%E9%BA%B5%EF%BC%8C%E4%B8%80%E9%82%8A%E7%9C%8B%E8%A1%B0%E4%BB%94%E6%A8%82%E5%9C%92)
 * **No limit** on word count
+
+### Docker
+```bash
+# api + web interface
+docker run -p 8080:8080 jackytck/jcconv:v1.0.1
+
+# quick play
+docker run jackytck/jcconv:v1.0.1 play -i '矩陣力學是量子力學其中一種的表述形式'
+```
 
 ### Single line
 Enter original text in standard input and get back the result in standard output.
