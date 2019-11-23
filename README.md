@@ -13,20 +13,25 @@
 * With **variants**: compare: [jcconv](https://jcconv.jackytck.com/?text=一邊食公仔麵，一邊看衰仔樂園) vs [google](https://translate.google.com.hk/#view=home&op=translate&sl=zh-CN&tl=zh-CN&text=%E4%B8%80%E9%82%8A%E9%A3%9F%E5%85%AC%E4%BB%94%E9%BA%B5%EF%BC%8C%E4%B8%80%E9%82%8A%E7%9C%8B%E8%A1%B0%E4%BB%94%E6%A8%82%E5%9C%92)
 * **No limit** on word count
 
+### Homebrew
+```bash
+$ brew install jackytck/jcconv/jcconv
+```
+
 ### Docker
 ```bash
 # api + web interface
-docker run -p 8080:8080 jackytck/jcconv:v1.0.1
+$ docker run -p 8080:8080 jackytck/jcconv:v1.0.1
 
 # quick play
-docker run jackytck/jcconv:v1.0.1 play -i '矩陣力學是量子力學其中一種的表述形式'
+$ docker run jackytck/jcconv:v1.0.1 play -i '矩陣力學是量子力學其中一種的表述形式'
 ```
 
 ### Single line
 Enter original text in standard input and get back the result in standard output.
 
 ```
-jcconv play [flags]
+$ jcconv play [flags]
 ```
 
 #### Options
@@ -42,7 +47,7 @@ jcconv play [flags]
 Translate a single file and output to the given path.
 
 ```
-jcconv file [flags]
+$ jcconv file [flags]
 ```
 
 ##### Options
@@ -61,7 +66,7 @@ jcconv file [flags]
 Translate all of the text file(s) under the input directory.
 
 ```
-jcconv all [flags]
+$ jcconv all [flags]
 ```
 
 #### Options
@@ -79,7 +84,7 @@ jcconv all [flags]
 Detect if a given string is traditional or simplified. It is classified as traditional only if it has 97% confidence.
 
 ```
-jcconv detect [flags]
+$ jcconv detect [flags]
 ```
 
 #### Options
@@ -94,7 +99,7 @@ jcconv detect [flags]
 Start a translation api server, plus a web interface for interacting with it.
 
 ```
-jcconv web [flags]
+$ jcconv web [flags]
 ```
 
 #### Options
