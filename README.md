@@ -126,7 +126,7 @@ $ curl -sd 'text=就像收集垃圾和剷雪一樣的事。不得不由誰來做
 }
 ```
 
-### Sharing link
+### Sharable link
 Link with translation by using the query parameter `text`, e.g.
 
 * https://jcconv.jackytck.com/?text=歐幾理得推論
