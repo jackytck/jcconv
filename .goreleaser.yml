@@ -47,3 +47,11 @@ dockers:
     image_templates:
     - "jackytck/jcconv:{{ .Tag }}"
     dockerfile: Dockerfile
+brews:
+- github:
+    owner: jackytck
+    name: homebrew-jcconv
+  description: An offline simplified <-> traditional (HK + TW) Chinese converter (with api server).
+  homepage: https://github.com/jackytck/jcconv
+  test: |
+    system "#{bin}/jcconv version"
