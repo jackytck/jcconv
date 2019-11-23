@@ -23,7 +23,7 @@ jobs:
     - name: goreleaser
       uses: docker://goreleaser/goreleaser
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.GORELEASER_GITHUB_TOKEN }}
         DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
         DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
       with:
